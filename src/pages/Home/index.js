@@ -1,20 +1,39 @@
 import React from 'react'
 
 import { MdAddShoppingCart } from 'react-icons/md'
+import api from '../../services/api'
+import { formatPrice } from '../../util/format'
 import { ProductList } from './styles'
 
-export default function Home() {
-  return (
-    <ProductList>
-      {
-        [...new Array(6)].map(() => (
-          <li>
+export default class Home extends React.Component {
+  state = {
+    products: []
+  }
+
+  async componentDidMount () {
+    await api.get('products').then(({ data = [] }) => {
+
+      const products = data.map(product => ({
+        ...product,
+        priceFormatted: formatPrice(product.price)
+      }))
+      this.setState({ products })
+    })
+  }
+
+  render() {
+    const { products = [] } = this.state
+    return (
+      <ProductList>
+        {
+          products.map((product) => (
+          <li key={product.id}>
             <img
-              src="https://static.netshoes.com.br/produtos/tenis-nike-revolution-4-masculino/26/D12-9119-026/D12-9119-026_zoom1.jpg"
-              alt="Tênis"
+              src={product.image}
+              alt={product.title}
             />
-            <strong>Tênis muito legal</strong>
-            <span>R$ 129,90 </span>
+            <strong>{product.title}</strong>
+              <span>{product.priceFormatted}</span>
 
             <button type="button">
               <div>
@@ -26,6 +45,7 @@ export default function Home() {
           </li>
         ))
       }
-    </ProductList>
-  )
+      </ProductList>
+    )
+  }
 }
