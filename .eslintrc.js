@@ -19,6 +19,7 @@ module.exports = {
   },
   plugins: [
     'react',
+    'react-hooks'
   ],
   rules: {
     'react/jsx-filename-extension': [
@@ -29,6 +30,8 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'no-param-reassign': 'off',
     'react/prefer-stateless-function': 'off',
-    'no-console': ["error", { allow: ["tron"]}]
+    'no-console': ["error", { allow: ["tron"]}],
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn'
   },
 };
